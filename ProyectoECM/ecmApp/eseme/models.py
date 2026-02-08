@@ -38,6 +38,8 @@ class Course(models.Model):
     cour_level = models.ForeignKey('Level', models.DO_NOTHING, db_column='cour_level', blank=True, null=True)
     cour_material = models.TextField(blank=True, null=True)
     alterno = models.TextField(blank=True, null=True)
+    cour_status = models.BooleanField(default=True)
+    cour_type = models.TextField(blank=True)
 
     def __str__(self):
         return self.cour_description

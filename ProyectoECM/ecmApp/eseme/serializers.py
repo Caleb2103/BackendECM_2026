@@ -45,7 +45,8 @@ class MemberCreateSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = '__all__'
+        fields = ['cour_id', 'cour_description', 'cour_level', 'cour_material',
+                  'alterno', 'cour_status', 'cour_type']
 
 class VoucherCreateSerializer(serializers.ModelSerializer):
     # Campo para recibir base64 desde el frontend
@@ -128,7 +129,6 @@ class VoucherCreateSerializer(serializers.ModelSerializer):
         )
 
         return voucher
-
 
 class VoucherGetSerializer(serializers.ModelSerializer):
     # Campo computado para URL de imagen
