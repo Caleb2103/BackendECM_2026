@@ -21,6 +21,7 @@ urlpatterns = [
     path('student/update/<int:pk>', StudentUpdateView.as_view(), name='update-student'),
     path('student/list', StudentListAPIView.as_view(), name='student-list'),
     path('student/create', StudentCreateAPIView.as_view(), name='student-create'),
+    path('student/period', StudentListActivePeriod.as_view(), name='student-period'),
     path('student/declarativa', StudentCreateDeclarativaAPIView.as_view(), name='student-declarativa'),
     
     # ----------------------- LOGIN URL'S -----------------------

@@ -10,10 +10,17 @@ from django.shortcuts import get_object_or_404
 # ----------------------- STUDENT VIEWS ----------------------- #
 class StudentSeasonsAPIView(generics.ListAPIView):
     serializer_class = StudentSerializer
-
+    
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')
         return Student.objects.filter(stud_member__memb_id=user_id)
+    
+class StudentListActivePeriod(generics.ListAPIView):
+    serializer_class = StudentSerializer
+    
+    def get_queryset(self):
+        active_period = Period.objects.filter(peri_status=True).first()
+        return Student.objects.filter(stud_season__seas_period=active_period).select_related('stud_season', 'stud_member')
 
 class StudentCoursesAPIView(generics.ListAPIView):
     serializer_class = StudentSerializer
