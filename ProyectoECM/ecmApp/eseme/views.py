@@ -108,6 +108,11 @@ class StudentCreateDeclarativaAPIView(generics.CreateAPIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
+class StudentDeleteAPIView(generics.DestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    lookup_field = 'pk'
+
 # ----------------------- MEMBER VIEWS ----------------------- #
 class MemberListAPIView(generics.ListAPIView):
     serializer_class = MemberGetSerializer
