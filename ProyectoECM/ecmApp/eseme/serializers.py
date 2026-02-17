@@ -29,7 +29,6 @@ class StudentPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
-        depth = 2
         
 class MemberGetSerializer(serializers.ModelSerializer):
     class Meta:
