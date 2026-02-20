@@ -32,5 +32,6 @@ urlpatterns = [
     path('vouchers/create', VoucherCreateAPIView.as_view(), name='voucher-create'),
     path('vouchers/list', VoucherListAPIView.as_view(), name='voucher-list'),
     path('vouchers/detail/<int:pk>', VoucherDetailAPIView.as_view(), name='voucher-detail'),
+    path('vouchers/update/<int:pk>', VoucherUpdateAPIView.as_view(), name='voucher-update'),
     path('vouchers/image/<int:voucher_id>', voucher_image_view, name='voucher-image'),
 ]

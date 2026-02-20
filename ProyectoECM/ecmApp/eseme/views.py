@@ -269,14 +269,14 @@ class VoucherUpdateAPIView(generics.UpdateAPIView):
     serializer_class = VoucherPatchSerializer
     lookup_field = 'pk'
 
-    def patch(self, request, *args, **kwargs):
+    def patch(self, request, *_args, **_kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(VoucherGetSerializer(instance, context={'request': request}).data)
 
-    def put(self, request, *args, **kwargs):
+    def put(self, _request, *_args, **_kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
