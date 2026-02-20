@@ -129,6 +129,11 @@ class VoucherCreateSerializer(serializers.ModelSerializer):
 
         return voucher
 
+class VoucherPatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Voucher
+        fields = ['vouc_status', 'vouc_comment']
+
 class VoucherGetSerializer(serializers.ModelSerializer):
     # Campo computado para URL de imagen
     vouc_image_url = serializers.SerializerMethodField()

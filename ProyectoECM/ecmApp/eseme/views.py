@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from .models import Student, Member, Course, Season, Zone, Period, Voucher
@@ -262,6 +263,21 @@ class VoucherDetailAPIView(generics.RetrieveAPIView):
     serializer_class = VoucherGetSerializer
     queryset = Voucher.objects.all()
     lookup_field = 'pk'
+
+class VoucherUpdateAPIView(generics.UpdateAPIView):
+    queryset = Voucher.objects.all()
+    serializer_class = VoucherPatchSerializer
+    lookup_field = 'pk'
+
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(VoucherGetSerializer(instance, context={'request': request}).data)
+
+    def put(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 def voucher_image_view(request, voucher_id):
