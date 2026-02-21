@@ -93,7 +93,7 @@ class StudentCreateDeclarativaAPIView(generics.CreateAPIView):
         member_id = request.data.get('member_id')
 
         for curso_data in cursos_data:
-            seas_id = Season.objects.filter(seas_course=curso_data['cour_id']).values_list('seas_id', flat=True).first()
+            seas_id = Season.objects.filter(seas_course=curso_data['cour_id'], seas_glosa='Declarativa').values_list('seas_id', flat=True).first()
             if not seas_id:
                 continue
 
