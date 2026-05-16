@@ -2,9 +2,10 @@ from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
+from rest_framework.views import APIView
 from .models import Student, Member, Course, Season, Zone, Period, Voucher
 from .serializers import *
-from django.db.models import Q, F
+from django.db.models import Q, F, Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
@@ -113,6 +114,51 @@ class StudentDeleteAPIView(generics.DestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     lookup_field = 'pk'
+
+class StudentCountByPeriodAPIView(APIView):
+    def get(self, request):
+        periodo_id = request.query_params.get('periodo')
+        if not periodo_id:
+            return Response({"error": "El parámetro 'periodo' es requerido."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            period = Period.objects.get(peri_id=periodo_id)
+        except Period.DoesNotExist:
+            return Response({"error": f"El periodo con ID {periodo_id} no existe."}, status=status.HTTP_404_NOT_FOUND)
+
+        base_qs = Student.objects.filter(stud_season__seas_period=period)
+
+        total = base_qs.count()
+
+        por_zona = list(
+            base_qs
+            .values(zona_id=F('stud_member__memb_zone__zone_id'), zona=F('stud_member__memb_zone__zone_name'))
+            .annotate(total=Count('stud_id'))
+            .order_by('-total')
+        )
+
+        por_curso = list(
+            base_qs
+            .values(curso_id=F('stud_season__seas_course__cour_id'), curso=F('stud_season__seas_course__cour_description'))
+            .annotate(total=Count('stud_id'))
+            .order_by('-total')
+        )
+
+        por_modalidad = list(
+            base_qs
+            .values(modalidad_id=F('stud_season__seas_mode__mode_id'), modalidad=F('stud_season__seas_mode__mode_name'))
+            .annotate(total=Count('stud_id'))
+            .order_by('-total')
+        )
+
+        return Response({
+            "periodo_id": period.peri_id,
+            "periodo": period.peri_description,
+            "total_matriculados": total,
+            "por_zona": por_zona,
+            "por_curso": por_curso,
+            "por_modalidad": por_modalidad,
+        })
 
 # ----------------------- MEMBER VIEWS ----------------------- #
 class MemberListAPIView(generics.ListAPIView):

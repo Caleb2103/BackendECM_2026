@@ -16,6 +16,9 @@ urlpatterns = [
     path('courses/list', CourseListAPIView.as_view(), name='course-list'),
     path('courses/create', StudentCreateDeclarativaAPIView.as_view(), name='season-course-create'),
 
+    # ----------------------- STATS URL'S -----------------------
+    path('student/count', StudentCountByPeriodAPIView.as_view(), name='student-count-period'),
+
     # ----------------------- STUDENT URL'S -----------------------
     path('teacher/list/<int:teacher>', TeacherListView.as_view(), name='teacher-list'),
     path('student/update/<int:pk>', StudentUpdateView.as_view(), name='update-student'),
