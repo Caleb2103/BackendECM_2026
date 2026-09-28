@@ -11,10 +11,14 @@ urlpatterns = [
     # ----------------------- MEMBERS URL'S -----------------------
     path('members/list', MemberListAPIView.as_view(), name='member-list'),
     path('members/create', MemberCreateAPIView.as_view(), name='member-create'),
+    path('members/check/<str:dni>', MemberCheckDniAPIView.as_view(), name='member-check-dni'),
     
     # ----------------------- COURSES URL'S -----------------------
     path('courses/list', CourseListAPIView.as_view(), name='course-list'),
     path('courses/create', StudentCreateDeclarativaAPIView.as_view(), name='season-course-create'),
+
+    # ----------------------- PERIODS URL'S -----------------------
+    path('periods/list', PeriodListAPIView.as_view(), name='period-list'),
 
     # ----------------------- STATS URL'S -----------------------
     path('student/count', StudentCountByPeriodAPIView.as_view(), name='student-count-period'),

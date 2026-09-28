@@ -196,10 +196,22 @@ class MemberCreateAPIView(generics.CreateAPIView):
             print(f"Serializer errors: {serializer.errors}")  # Registro de depuración
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class MemberCheckDniAPIView(APIView):
+    def get(self, request, dni):
+        if Member.objects.filter(memb_dni=dni).exists():
+            return Response({"error": f"Ya existe un registro con el DNI {dni}."}, status=status.HTTP_409_CONFLICT)
+
+        return Response({"message": "DNI disponible."}, status=status.HTTP_200_OK)
+
 # ----------------------- COURSE VIEWS ----------------------- #
 class CourseListAPIView(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+# ----------------------- PERIOD VIEWS ----------------------- #
+class PeriodListAPIView(generics.ListAPIView):
+    queryset = Period.objects.all().order_by('-peri_id')
+    serializer_class = PeriodSerializer
 
 # ----------------------- SEASON VIEWS ----------------------- #
 class SeasonListAPIView(generics.ListAPIView):

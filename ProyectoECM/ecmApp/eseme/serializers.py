@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Season, Student, Member, Course, Voucher
+from .models import Season, Student, Member, Course, Period, Voucher
 import base64
 import re
 
@@ -46,6 +46,11 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['cour_id', 'cour_description', 'cour_level', 'cour_material',
                   'alterno', 'cour_status', 'cour_type']
+
+class PeriodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Period
+        fields = '__all__'
 
 class VoucherCreateSerializer(serializers.ModelSerializer):
     # Campo para recibir base64 desde el frontend
