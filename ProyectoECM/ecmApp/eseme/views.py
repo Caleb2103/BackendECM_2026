@@ -21,8 +21,17 @@ class StudentListActivePeriod(generics.ListAPIView):
     serializer_class = StudentSerializer
     
     def get_queryset(self):
-        active_period = Period.objects.filter(peri_status=True).first()
-        return Student.objects.filter(stud_season__seas_period=active_period).select_related('stud_season', 'stud_member')
+        periodo_id = self.request.query_params.get('periodo')
+
+        if periodo_id:
+            try:
+                period = Period.objects.get(peri_id=periodo_id)
+            except (Period.DoesNotExist, ValueError):
+                raise NotFound(f"El periodo con ID {periodo_id} no existe.")
+        else:
+            period = Period.objects.filter(peri_status=True).first()
+
+        return Student.objects.filter(stud_season__seas_period=period).select_related('stud_season', 'stud_member')
 
 class StudentCoursesAPIView(generics.ListAPIView):
     serializer_class = StudentSerializer
