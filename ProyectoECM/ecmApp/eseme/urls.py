@@ -7,6 +7,7 @@ urlpatterns = [
     path('season/<int:user_id>', StudentSeasonsAPIView.as_view(), name='student-seasons'),
     path('season/course/<int:user_id>', StudentCoursesAPIView.as_view(), name='student-courses'),
     path('season/list/<int:user>', SeasonListAPIView.as_view(), name='season-list'),
+    path('season/status/<int:pk>', SeasonStatusUpdateAPIView.as_view(), name='season-status'),
     
     # ----------------------- MEMBERS URL'S -----------------------
     path('members/list', MemberListAPIView.as_view(), name='member-list'),

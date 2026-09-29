@@ -234,6 +234,21 @@ class SeasonListAPIView(generics.ListAPIView):
         
         return queryset.exclude(student__stud_member=user_id)
 
+class SeasonStatusUpdateAPIView(generics.UpdateAPIView):
+    queryset = Season.objects.all()
+    serializer_class = SeasonStatusSerializer
+    lookup_field = 'pk'
+
+    def patch(self, request, *_args, **_kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def put(self, _request, *_args, **_kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 # ----------------------- USER VIEWS ----------------------- #
 class LoginAPIView(generics.ListAPIView):
     serializer_class = MemberGetSerializer

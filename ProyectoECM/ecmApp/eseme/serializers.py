@@ -8,7 +8,12 @@ class SeasonSerializer(serializers.ModelSerializer):
         model = Season
         fields = '__all__'
         depth = 1
-        
+
+class SeasonStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = ['seas_status']
+
 class StudentDeclarativaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
