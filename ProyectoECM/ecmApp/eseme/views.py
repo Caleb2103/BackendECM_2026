@@ -205,6 +205,11 @@ class MemberCreateAPIView(generics.CreateAPIView):
             print(f"Serializer errors: {serializer.errors}")  # Registro de depuración
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class MemberDetailAPIView(generics.RetrieveAPIView):
+    serializer_class = MemberGetSerializer
+    queryset = Member.objects.all()
+    lookup_field = 'pk'
+
 class MemberUpdateAPIView(generics.UpdateAPIView):
     queryset = Member.objects.all()
     serializer_class = MemberUpdateSerializer
