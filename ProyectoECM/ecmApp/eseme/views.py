@@ -205,6 +205,33 @@ class MemberCreateAPIView(generics.CreateAPIView):
             print(f"Serializer errors: {serializer.errors}")  # Registro de depuración
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class MemberUpdateAPIView(generics.UpdateAPIView):
+    queryset = Member.objects.all()
+    serializer_class = MemberUpdateSerializer
+    lookup_field = 'pk'
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data.copy()
+
+        # El front envía la zona por nombre, igual que en MemberCreateAPIView
+        zone_name = data.get('memb_zone', None)
+        if zone_name:
+            try:
+                zone = Zone.objects.get(zone_name=zone_name)
+                data['memb_zone'] = zone.zone_id
+            except Zone.DoesNotExist:
+                return Response({"error": "Zone does not exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Fecha de nacimiento vacía -> null
+        if data.get('birthdate', None) == '':
+            data['birthdate'] = None
+
+        serializer = self.get_serializer(instance, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(MemberGetSerializer(instance).data)
+
 class MemberCheckDniAPIView(APIView):
     def get(self, request, dni):
         if Member.objects.filter(memb_dni=dni).exists():

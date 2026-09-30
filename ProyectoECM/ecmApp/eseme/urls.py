@@ -12,6 +12,7 @@ urlpatterns = [
     # ----------------------- MEMBERS URL'S -----------------------
     path('members/list', MemberListAPIView.as_view(), name='member-list'),
     path('members/create', MemberCreateAPIView.as_view(), name='member-create'),
+    path('members/update/<int:pk>', MemberUpdateAPIView.as_view(), name='member-update'),
     path('members/check/<str:dni>', MemberCheckDniAPIView.as_view(), name='member-check-dni'),
     
     # ----------------------- COURSES URL'S -----------------------

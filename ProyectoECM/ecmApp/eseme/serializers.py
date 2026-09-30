@@ -45,6 +45,12 @@ class MemberCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = '__all__'
+
+class MemberUpdateSerializer(serializers.ModelSerializer):
+    # Solo datos personales: memb_dni y memb_role no se pueden cambiar desde el perfil
+    class Meta:
+        model = Member
+        fields = ['memb_name', 'memb_surname', 'memb_mobil', 'birthdate', 'memb_zone']
         
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
